@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Stir Pie: Resolving overlapping labels outside of Pie</title>
+    <meta charset="UTF-8" />
+    <style>
+      html {
+        height: 100%;
+        display: flex;
+      }
+
+      body {
+        flex: 1;
+        position: relative;
+      }
+
+      button {
+        position: absolute;
+        top: 48px;
+        right: 48px;
+        width: 100px;
+        height: 50px;
+      }
+
+      .collided > rect {
+        fill: red;
+      }
+    </style>
+    <script src="/node_modules/d3/dist/d3.js"></script>
+    <script src="/stirpie.js"></script>
+  </head>
+  <body>
+    <script>
+      const size = 600;
+      const radius = 128;
+
+      (async function () {
+        const svg = d3
+          .select(document.body)
+          .append("svg")
+          .attr("width", "100%")
+          .attr("height", "100%")
+          .attr("viewBox", [-size / 2, -size / 2, size, size]);
+
+        const sample1 = await d3.json("./sample1.json");
+        const pie = d3
+          .pie()
+          .startAngle(-0.5 * Math.PI)
+          .endAngle(1.5 * Math.PI)
+          .padAngle(1 / radius)(sample1.values);
+
+        const color = d3
+          .scaleSequentialLog(d3.interpolatePuBuGn)
+          .domain([
+            sample1.values[sample1.values.length - 1],
+            sample1.values[0],
+          ]);
+
+        const dimensions = [];
+
+        svg
+          .append("g")
+          .attr("class", "arc")
+          .attr("stroke", "none")
+          .attr("stroke-width", 1)
+          .attr("stroke-linejoin", "round")
+          .selectAll("path")
+          .data(pie)
+          .join("path")
+          .attr("fill", (d) => color(d.value))
+          .attr("d", d3.arc().innerRadius(0).outerRadius(radius));
+
+        svg
+          .append("g")
+          .attr("class", "labels")
+          .attr("font-family", "sans-serif")
+          .attr("font-size", 10)
+          .selectAll("g.label")
+          .data(pie)
+          .join("g")
+          .attr("class", "label")
+          .attr("id", (d) => `_${d.index}`)
+          .call((s) => {
+            s.append("circle")
+              .attr("r", 4)
+              .attr("fill", "black")
+              .attr("opacity", 0.5);
+            s.append("rect")
+              .attr("fill", (d) => color(d.value))
+              .attr("stroke", "black")
+              .attr("stroke-width", 1)
+              .attr("opacity", 0.5);
+            s.append("text")
+              .text(
+                (d) => `[${[d.index]}]${sample1.labels[d.index]}${d.value}册`
+              )
+              .attr("dy", "1em")
+              .each(function () {
+                dimensions.push(this.getBBox());
+              });
+          });
+
+        const createTransition = (name, duration) => {
+          let finishedCallback;
+          const finishedPromise = new Promise((res, _rej) => {
+            finishedCallback = res;
+          });
+
+          const t = d3
+            .transition(name)
+            .duration(duration)
+            .on("end", () => finishedCallback());
+
+          return [t, finishedPromise];
+        };
+
+        const updateLabel = (label, box, duration = 250) => {
+          const { translateX, translateY, width, height, mx, dx, my, dy } = box;
+          const x = mx + dx;
+          const y = my + dy;
+
+          const [t, finishedPromise] = createTransition(box.i, duration);
+
+          label
+            .transition(t)
+            .attr("transform", `translate(${translateX},${translateY})`);
+
+          label.select("text").transition(t).attr("x", x).attr("y", y);
+
+          label
+            .select("rect")
+            .transition(t)
+            .attr("x", x)
+            .attr("y", y)
+            .attr("width", width)
+            .attr("height", height);
+
+          return finishedPromise;
+        };
+
+        const updateAllLabels = (resolver, duration = 250) => {
+          const promises = [];
+          svg.selectAll("g.label").each(function (_d, i) {
+            this.classList.remove("collided");
+            this.classList.remove("resolved");
+            promises.push(
+              updateLabel(d3.select(this), resolver.boxes[i]),
+              duration
+            );
+          });
+          return Promise.all(promises);
+        };
+
+        const highlightCollided = (resolver, duration = 1000) => {
+          const resolved = resolver.resolved;
+          svg
+            .selectAll("g.label")
+            .attr("class", (_d, i) =>
+              i >= resolved ? "collided label" : "resolved label"
+            );
+          return new Promise((resolve) => setTimeout(resolve, duration));
+        };
+
+        const resolveOverlappingLabels = async (resolver) => {
+          for (const box of resolver.resolve()) {
+            const label = svg.select(`#_${box.i}`);
+            await updateLabel(label, box);
+          }
+        };
+
+        const replay = async () => {
+          for (const radius of [128, 150, [150, 170]]) {
+            const resolver = stirpie(dimensions, pie, radius);
+            await updateAllLabels(resolver);
+            await resolveOverlappingLabels(resolver);
+            await highlightCollided(resolver);
+          }
+        };
+
+        replay();
+        const button = document.createElement("button");
+        button.addEventListener("click", replay);
+        button.textContent = "replay";
+        button.type = "button";
+        document.body.appendChild(button);
+      })();
+    </script>
+  </body>
+</html>

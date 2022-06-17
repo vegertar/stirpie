@@ -1,0 +1,35 @@
+{
+  "name": "stirpie",
+  "version": "0.1.0",
+  "description": "Resolving overlapping labels outside of Pie.",
+  "type": "module",
+  "main": "index.js",
+  "repository": "git@github.com:vegertar/stirpie.git",
+  "author": "Joe Hu <vegertar@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w"
+  },
+  "files": [
+    "stirpie.js",
+    "index.js",
+    "index.ts",
+    "lib/**/*.js"
+  ],
+  "devDependencies": {
+    "@types/d3": "^7.4.0",
+    "@types/ms": "^0.7.30",
+    "d3": "^7.4.4",
+    "jest": "^28.1.1",
+    "rollup": "^2.75.6",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "tslib": "^2.4.0",
+    "typescript": "^4.7.3"
+  },
+  "dependencies": {
+    "rbush": "^3.0.1"
+  }
+}
