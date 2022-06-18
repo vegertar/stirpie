@@ -1,18 +1,33 @@
 {
   "name": "stirpie",
   "version": "0.1.0",
-  "description": "Resolving overlapping labels outside of Pie.",
-  "type": "module",
-  "main": "index.js",
-  "repository": "git@github.com:vegertar/stirpie.git",
+  "description": "Resolving overlapping labels outside of Pie chart",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/vegertar/stirpie.git"
+  },
   "author": "Joe Hu <vegertar@gmail.com>",
   "license": "MIT",
+  "type": "module",
+  "module": "index.js",
+  "main": "stirpie.js",
+  "browser": "stirpie.min.js",
+  "jsdelivr": "stirpie.min.js",
+  "unpkg": "stirpie.min.js",
+  "keywords": [
+    "resolve-pie",
+    "resolve-overlapping-labels",
+    "pie-chart",
+    "overlapping",
+    "collision"
+  ],
   "scripts": {
     "build": "rollup -c",
-    "dev": "rollup -c -w"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "files": [
     "stirpie.js",
+    "stirpie.min.js",
     "index.js",
     "index.ts",
     "lib/**/*.js"
@@ -25,11 +40,20 @@
     "rollup": "^2.75.6",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript": "^1.0.1",
     "tslib": "^2.4.0",
     "typescript": "^4.7.3"
   },
   "dependencies": {
     "rbush": "^3.0.1"
+  },
+  "bugs": {
+    "url": "https://github.com/vegertar/stirpie/issues"
+  },
+  "homepage": "https://github.com/vegertar/stirpie#readme",
+  "directories": {
+    "example": "example",
+    "lib": "lib"
   }
 }

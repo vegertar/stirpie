@@ -33,6 +33,7 @@
     <script>
       const size = 600;
       const radius = 128;
+      const orbits = [radius, 150, [150, 170]];
 
       (async function () {
         const svg = d3
@@ -169,7 +170,7 @@
         };
 
         const replay = async () => {
-          for (const radius of [128, 150, [150, 170]]) {
+          for (const radius of orbits) {
             const resolver = stirpie(dimensions, pie, radius);
             await updateAllLabels(resolver);
             await resolveOverlappingLabels(resolver);

@@ -5,22 +5,25 @@ import { PieCollision } from "./lib/collision.js";
 
 type Config = {
   /**
-   * The maximum movement angle in arc, default `80deg`.
+   * The maximum movement angle in arc. Defaults `80deg`.
    */
-  max?: number;
+  max?: number | ((index: number) => number);
+
   /**
-   * The increment of angle in arc at every movement, default `1deg`.
+   * The increment of angle in arc at every movement. Defaults `1deg`.
    */
   inc?: number;
+
   /**
    * By default the resolving orbit will be intersecting at labels's corners,
-   * otherwise the middle of labels if `verticalAlign` is `"middle"`. Default
+   * otherwise the middle of labels if `verticalAlign` is `"middle"`. Defaults
    * `"auto"`.
    */
   verticalAlign?: "auto" | "middle";
+
   /**
    * Used to cancel out the non-standard angle offset, e.g. the zero arc of
-   * `d3.arc` is actually `-pi/2`. Default `-pi/2`.
+   * `d3.arc` is actually `-pi/2`. Defaults `-pi/2`.
    */
   angleOffset?: number;
 };

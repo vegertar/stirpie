@@ -2,3 +2,6 @@ __tests__/**/*.output.html
 /html-report
 /node_modules
 /sync.sh
+index.js
+stirpie.js
+stirpie.min.js
