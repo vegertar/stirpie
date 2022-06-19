@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es6",
+    "module": "es6",
+    "allowJs": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "removeComments": false,
+    "declaration": true,
+    "declarationDir": ".",
+    "declarationMap": false,
+    "emitDeclarationOnly": true,
+    "types": [
+      "node"
+    ],
+    "lib": [
+      "es6",
+      "dom"
+    ]
+  },
+  "include": [
+    "index.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

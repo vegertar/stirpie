@@ -1,6 +1,6 @@
 {
   "name": "stirpie",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Resolving overlapping labels outside of Pie chart",
   "repository": {
     "type": "git",
@@ -9,6 +9,7 @@
   "author": "Joe Hu <vegertar@gmail.com>",
   "license": "MIT",
   "type": "module",
+  "types": "index.d.ts",
   "module": "index.js",
   "main": "stirpie.js",
   "browser": "stirpie.min.js",
@@ -29,10 +30,10 @@
     "stirpie.js",
     "stirpie.min.js",
     "index.js",
-    "index.ts",
-    "lib/**/*.js"
+    "index.d.ts"
   ],
   "devDependencies": {
+    "@types/rbush": "^3.0.0",
     "d3": "^7.4.4",
     "jest": "^28.1.1",
     "rollup": "^2.75.6",

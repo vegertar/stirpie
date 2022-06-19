@@ -5,3 +5,4 @@ __tests__/**/*.output.html
 index.js
 stirpie.js
 stirpie.min.js
+*.d.ts

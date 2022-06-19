@@ -102,6 +102,41 @@ type Box = {
   dy: number;
 };
 
+type Dimensions = Iterable<{ width: number; height: number }>;
+type Pie = Iterable<{ startAngle: number; endAngle: number }>;
+type Radius = number | [rx: number, ry: number];
+
+export interface Resolver {
+  readonly pie: Pie;
+  readonly radius: Radius;
+
+  /**
+   * `boxes` contains resolved results for every label.
+   */
+  readonly boxes: Box[];
+
+  /**
+   * `collided` is a set collided indices of labels.
+   */
+  get collided(): number[];
+
+  /**
+   * `resolved` is the number of labels that has been resolved.
+   */
+  get resolved(): number;
+
+  /**
+   * Resolving overlapping labels as many as possible. This is a wrapper of
+   * looping iterator that created by `resolve()`.
+   * @param all True
+   */
+  resolve(all: true): Resolver;
+  /**
+   * Create an iterator to resolve every collided label.
+   */
+  resolve(all?: false): { [Symbol.iterator](): Generator<Box, void, void> };
+}
+
 /**
  * Creates a resolver to resolve overlapping labels outside of Pie. The Pie
  * data should be sorted in descending order.
@@ -111,45 +146,11 @@ type Box = {
  * @param config The configure of resolving process.
  * @returns The instance of resolver.
  */
-export default function <
-  Dimensions extends { width: number; height: number }[],
-  Pie extends { startAngle: number; endAngle: number }[]
->(
+export default function (
   dimensions: Dimensions,
   pie: Pie,
-  radius: number | [rx: number, ry: number],
+  radius: Radius,
   config?: Config
 ) {
-  type Resolver = {
-    readonly pie: Pie;
-    readonly radius: typeof radius;
-
-    /**
-     * `boxes` contains resolved results for every label.
-     */
-    readonly boxes: Box[];
-
-    /**
-     * `collided` is a set collided indices of labels.
-     */
-    get collided(): number[];
-
-    /**
-     * `resolved` is the number of labels that has been resolved.
-     */
-    get resolved(): number;
-
-    /**
-     * Resolving overlapping labels as many as possible. This is a wrapper of
-     * looping iterator that created by `resolve()`.
-     * @param all
-     */
-    resolve(all: true): Resolver;
-    /**
-     * Create an iterator to resolve every collided label.
-     */
-    resolve(all?: false): { [Symbol.iterator](): Generator<Box, void, void> };
-  };
-
   return new PieCollision(dimensions, pie, radius, config) as Resolver;
 }
