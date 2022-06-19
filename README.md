@@ -2,7 +2,7 @@
 
 ![example](example/example.gif)
 
-It's dispensable to have resolving overlapping labels for a pie chart on most occasions, but whenever people want it and without one, it's critical. `stirpie` is a simple library to resolve overlapping labels outside of a pie chart, which has already been sorted in descending order. [_Click here to edit_](https://stackblitz.com/edit/js-gnrnge?file=index.js) the [example](example/index.html) lively.
+It's dispensable to have resolving overlapping labels for a pie chart on most occasions, but whenever people want it and without one, it's critical. `stirpie` is a simple library to resolve overlapping labels outside of a pie chart, which has already been sorted in descending order. [_Click here to edit_](https://stackblitz.com/edit/js-quv53t?file=index.js) the [example](example/index.html) lively.
 
 ## Usage
 
@@ -10,11 +10,11 @@ It's dispensable to have resolving overlapping labels for a pie chart on most oc
 
 ```html
 <!-- as a UMD bundle  -->
-<script src="stirpie.min.js"></script>
+<script src="https://unpkg.com/stirpie@0.2.0/stirpie.min.js"></script>
 ```
 
 ```js
-// as a TS/ES module
+// as an ES module
 import stirpie from "stirpie";
 
 // as a CommonJS module

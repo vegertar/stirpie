@@ -1,6 +1,6 @@
 {
   "name": "stirpie",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Resolving overlapping labels outside of Pie chart",
   "repository": {
     "type": "git",
@@ -23,7 +23,7 @@
     "collision"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && tsc",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "files": [
